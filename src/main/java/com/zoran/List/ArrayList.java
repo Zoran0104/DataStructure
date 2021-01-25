@@ -49,8 +49,8 @@ public class ArrayList<E> extends AbstractList<E> {
     @Override
     public E remove(int index) {
         E old = elements[index];
-        for (int i = index; i < size - 1; i++) {
-            elements[i] = elements[i + 1];
+        if (size - 1 - index >= 0) {
+            System.arraycopy(elements, index + 1, elements, index, size - 1 - index);
         }
         //删除后最后一个位置也必须设为null，否则尽管最后一个位置前移对象仍需存在，但是当后续元素需删除
         //如果不清除，则该对象一直存在，直到该位置被覆盖
