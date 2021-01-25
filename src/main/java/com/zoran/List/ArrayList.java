@@ -53,7 +53,7 @@ public class ArrayList<E> extends AbstractList<E> {
             elements[i] = elements[i + 1];
         }
         //删除后最后一个位置也必须设为null，否则尽管最后一个位置前移对象仍需存在，但是当后续元素需删除
-        //如果不清除，则该对象一直存在，知道该位置被覆盖
+        //如果不清除，则该对象一直存在，直到该位置被覆盖
         elements[--size] = null;
         trim();
         return old;
