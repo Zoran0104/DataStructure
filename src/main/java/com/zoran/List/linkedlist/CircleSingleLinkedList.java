@@ -1,6 +1,8 @@
-package com.zoran.List;
+package com.zoran.List.linkedlist;
 
-public class SingleLinkedList<E> extends AbstractList<E> {
+import com.zoran.List.AbstractList;
+
+public class CircleSingleLinkedList<E> extends AbstractList<E> {
     private static class Node<E> {
         E element;
         Node<E> next;
@@ -9,14 +11,21 @@ public class SingleLinkedList<E> extends AbstractList<E> {
             this.element = element;
             this.next = node;
         }
+
+        @Override
+        public String toString() {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(element).append("_").append(next.element);
+            return stringBuilder.toString();
+        }
     }
 
     private Node<E> first;
 
-    public SingleLinkedList() {
+    public CircleSingleLinkedList() {
     }
 
-    public SingleLinkedList(Node<E> first) {
+    public CircleSingleLinkedList(Node<E> first) {
         this.first = first;
     }
 
@@ -29,6 +38,7 @@ public class SingleLinkedList<E> extends AbstractList<E> {
         while (node != null) {
             tmp = node.next;
             node.next = null;
+            node.element = null;
             node = tmp;
         }
         first = null;
@@ -53,6 +63,9 @@ public class SingleLinkedList<E> extends AbstractList<E> {
         rangeCheckForAdd(index);
         if (index == 0) {
             first = new Node<>(element, first);
+            //注意一开始链表为空的情况
+            Node<E> node = size == 0 ? first : getNodeByIndex(size - 1);
+            node.next = first;
         } else {
             Node<E> nodeByIndex = getNodeByIndex(index - 1);
             nodeByIndex.next = new Node<>(element, nodeByIndex.next);
@@ -65,7 +78,9 @@ public class SingleLinkedList<E> extends AbstractList<E> {
         rangeCheck(index);
         Node<E> node = first;
         if (index == 0) {
+            Node<E> nodeByIndex = getNodeByIndex(size - 1);
             first = first.next;
+            nodeByIndex.next = first;
         } else {
             Node<E> prev = getNodeByIndex(index - 1);
             node = prev.next;
@@ -107,16 +122,10 @@ public class SingleLinkedList<E> extends AbstractList<E> {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         Node<E> head = first;
-        while (head != null) {
-            if (head == first) {
-                stringBuilder.append(head.element);
-            } else {
-                stringBuilder.append(",").append(head.element);
-            }
+        do {
+            stringBuilder.append(head).append("\t");
             head = head.next;
-        }
-        return "LinkedList{" +
-                stringBuilder.toString() +
-                '}';
+        } while (head != first);
+        return stringBuilder.toString();
     }
 }

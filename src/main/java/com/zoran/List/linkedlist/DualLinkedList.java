@@ -1,4 +1,6 @@
-package com.zoran.List;
+package com.zoran.List.linkedlist;
+
+import com.zoran.List.AbstractList;
 
 public class DualLinkedList<E> extends AbstractList<E> {
     private static class Node<E> {
@@ -48,7 +50,9 @@ public class DualLinkedList<E> extends AbstractList<E> {
         Node<E> tmp;
         while (node != null) {
             tmp = node.next;
+            node.prev = null;
             node.next = null;
+            node.element = null;
             node = tmp;
         }
         first = null;
