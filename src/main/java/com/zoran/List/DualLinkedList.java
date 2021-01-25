@@ -1,22 +1,42 @@
 package com.zoran.List;
 
-public class LinkedList<E> extends AbstractList<E> {
+public class DualLinkedList<E> extends AbstractList<E> {
     private static class Node<E> {
         E element;
+        Node<E> prev;
         Node<E> next;
 
-        public Node(E element, Node<E> node) {
+        public Node(Node<E> prev, E element, Node<E> node) {
+            this.prev = prev;
             this.element = element;
             this.next = node;
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            if (prev != null) {
+                sb.append(prev.element);
+            } else {
+                sb.append("null");
+            }
+            sb.append("_").append(element).append("_");
+            if (next != null) {
+                sb.append(next.element);
+            } else {
+                sb.append("null");
+            }
+            return sb.toString();
         }
     }
 
     private Node<E> first;
+    private Node<E> last;
 
-    public LinkedList() {
+    public DualLinkedList() {
     }
 
-    public LinkedList(Node<E> first) {
+    public DualLinkedList(Node<E> first) {
         this.first = first;
     }
 
@@ -32,6 +52,7 @@ public class LinkedList<E> extends AbstractList<E> {
             node = tmp;
         }
         first = null;
+        last = null;
         size = 0;
     }
 
@@ -51,11 +72,24 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public void add(int index, E element) {
         rangeCheckForAdd(index);
-        if (index == 0) {
-            first = new Node<>(element, first);
+        if (index == size) {
+            //往最后一个位置添加元素或没有元素的时候添加元素
+            last = new Node<>(last, element, null);
+            //要考虑添加的是否为第一个元素
+            if (last.prev == null) {
+                first = last;
+            } else {
+                last.prev.next = last;
+            }
         } else {
-            Node<E> nodeByIndex = getNodeByIndex(index - 1);
-            nodeByIndex.next = new Node<>(element, nodeByIndex.next);
+            Node<E> nodeByIndex = getNodeByIndex(index);
+            Node<E> node = new Node<>(nodeByIndex.prev, element, nodeByIndex);
+            nodeByIndex.prev = node;
+            if (index == 0) {
+                first = node;
+            } else {
+                nodeByIndex.prev.next = node;
+            }
         }
         size++;
     }
@@ -63,13 +97,17 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public E remove(int index) {
         rangeCheck(index);
-        Node<E> node = first;
-        if (index == 0) {
-            first = first.next;
+        Node<E> node = getNodeByIndex(index);
+        if (node.prev == null) {
+            first = node.next;
         } else {
-            Node<E> prev = getNodeByIndex(index - 1);
-            node = prev.next;
-            prev.next = prev.next.next;
+            node.prev.next = node.next;
+        }
+
+        if (node.next == null) {
+            last = node.prev;
+        } else {
+            node.next.prev = node.prev;
         }
         size--;
         return node.element;
@@ -96,9 +134,17 @@ public class LinkedList<E> extends AbstractList<E> {
 
     public Node<E> getNodeByIndex(int index) {
         rangeCheck(index);
-        Node<E> node = first;
-        for (int i = 0; i < index; i++) {
-            node = node.next;
+        Node<E> node;
+        if (index < (size >> 1)) {
+            node = first;
+            for (int i = 0; i < index; i++) {
+                node = node.next;
+            }
+        } else {
+            node = last;
+            for (int i = size - 1; i > index; i--) {
+                node = node.prev;
+            }
         }
         return node;
     }
@@ -116,11 +162,11 @@ public class LinkedList<E> extends AbstractList<E> {
     }
 
     //逆序链表-头插法
-    public LinkedList<E> reverse() {
+    public DualLinkedList<E> reverse() {
         Node<E> node = first;
 
         if (node == null || node.next == null) {
-            return new LinkedList<>(node);
+            return new DualLinkedList<>(node);
         }
         Node<E> newNode = null;
         while (node != null) {
@@ -129,7 +175,7 @@ public class LinkedList<E> extends AbstractList<E> {
             newNode = node;
             node = next;
         }
-        return new LinkedList<E>(newNode);
+        return new DualLinkedList<E>(newNode);
     }
 
     @Override
@@ -137,11 +183,7 @@ public class LinkedList<E> extends AbstractList<E> {
         StringBuilder stringBuilder = new StringBuilder();
         Node<E> head = first;
         while (head != null) {
-            if (head == first) {
-                stringBuilder.append(head.element);
-            } else {
-                stringBuilder.append(",").append(head.element);
-            }
+            stringBuilder.append(head).append("\t");
             head = head.next;
         }
         return "LinkedList{" +

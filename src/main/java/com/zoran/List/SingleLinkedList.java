@@ -1,15 +1,37 @@
 package com.zoran.List;
 
-public class LinkedList2<E> extends AbstractList<E>{
+public class SingleLinkedList<E> extends AbstractList<E> {
+    private static class Node<E> {
+        E element;
+        Node<E> next;
+
+        public Node(E element, Node<E> node) {
+            this.element = element;
+            this.next = node;
+        }
+    }
+
     private Node<E> first;
 
-    public LinkedList2() {
-        first = new Node<>(null, null);
+    public SingleLinkedList() {
+    }
+
+    public SingleLinkedList(Node<E> first) {
+        this.first = first;
     }
 
     @Override
     public void clear() {
-        first.next = null;
+        //理论上这是没必要进行断开各个链表的节点链接，
+        //但避免有迭代器对象指向中间元素导致元素无法被gc回收
+        Node<E> node = first;
+        Node<E> tmp;
+        while (node != null) {
+            tmp = node.next;
+            node.next = null;
+            node = tmp;
+        }
+        first = null;
         size = 0;
     }
 
@@ -31,8 +53,8 @@ public class LinkedList2<E> extends AbstractList<E>{
         rangeCheckForAdd(index);
         if (index == 0) {
             first = new Node<>(element, first);
-        }else{
-            Node<E> nodeByIndex = getNodeByIndex(index-1);
+        } else {
+            Node<E> nodeByIndex = getNodeByIndex(index - 1);
             nodeByIndex.next = new Node<>(element, nodeByIndex.next);
         }
         size++;
@@ -44,8 +66,8 @@ public class LinkedList2<E> extends AbstractList<E>{
         Node<E> node = first;
         if (index == 0) {
             first = first.next;
-        }else{
-            Node<E> prev = getNodeByIndex(index-1);
+        } else {
+            Node<E> prev = getNodeByIndex(index - 1);
             node = prev.next;
             prev.next = prev.next.next;
         }
@@ -57,7 +79,7 @@ public class LinkedList2<E> extends AbstractList<E>{
     public int indexOf(E element) {
         Node<E> node = first;
         if (null == element) {
-            for (int i = 0; i < size ; i++) {
+            for (int i = 0; i < size; i++) {
                 if (null == node.element) {
                     return i;
                 }
@@ -81,20 +103,20 @@ public class LinkedList2<E> extends AbstractList<E>{
         return node;
     }
 
-    private static class Node<E> {
-        E element;
-        Node<E> next;
-
-        public Node(E element, Node<E> node) {
-            this.element = element;
-            this.next = node;
-        }
-    }
-
     @Override
     public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        Node<E> head = first;
+        while (head != null) {
+            if (head == first) {
+                stringBuilder.append(head.element);
+            } else {
+                stringBuilder.append(",").append(head.element);
+            }
+            head = head.next;
+        }
         return "LinkedList{" +
-                "first=" + first +
+                stringBuilder.toString() +
                 '}';
     }
 }
