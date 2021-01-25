@@ -87,6 +87,7 @@ public class ArrayList<E> extends AbstractList<E> {
         if (newCapacity < oldCapacity) {
             return ;
         }
+        //移位操作符的优先级是比加号低的!!!!
         newCapacity = (oldCapacity >> 1) + oldCapacity;
         E[] newElements = (E[]) new Object[newCapacity];
         if (size >= 0) {
@@ -96,16 +97,20 @@ public class ArrayList<E> extends AbstractList<E> {
     }
 
 
+    /**
+     * 数组缩容
+     */
     private void trim() {
         Logger arrayList = Logger.getLogger("ArrayList");
         int oldCapacity = elements.length;
         int newCapacity = oldCapacity >> 1;
+        //临界值size和新容量是否相等时也进行缩容
         if (newCapacity <= DEFAULT_CAPACITY || size > newCapacity) {
             return;
         }
         E[] newElements = (E[]) new Object[newCapacity];
-        for (int i = 0; i < size; i++) {
-            newElements[i] = elements[i];
+        if (size >= 0) {
+            System.arraycopy(elements, 0, newElements, 0, size);
         }
         elements = newElements;
         System.out.println("trim:"+newCapacity+"origin:"+oldCapacity);
