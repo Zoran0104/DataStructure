@@ -62,9 +62,10 @@ public class CircleSingleLinkedList<E> extends AbstractList<E> {
     public void add(int index, E element) {
         rangeCheckForAdd(index);
         if (index == 0) {
-            first = new Node<>(element, first);
+            Node newNode  = new Node<>(element, first);
             //注意一开始链表为空的情况
-            Node<E> node = size == 0 ? first : getNodeByIndex(size - 1);
+            Node<E> node = size == 0 ? newNode : getNodeByIndex(size - 1);
+            first = newNode;
             node.next = first;
         } else {
             Node<E> nodeByIndex = getNodeByIndex(index - 1);
