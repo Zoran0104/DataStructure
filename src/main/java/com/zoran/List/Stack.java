@@ -1,7 +1,7 @@
 package com.zoran.List;
 
 public class Stack<E> {
-    private ArrayList<E> stack;
+    private ArrayList<E> stack = new ArrayList<>(10);
     public boolean isEmpty() {
         return stack.isEmpty();
     }
