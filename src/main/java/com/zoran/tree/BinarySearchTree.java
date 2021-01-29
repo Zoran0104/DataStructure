@@ -6,7 +6,6 @@ import com.zoran.tree.printer.BinaryTreeInfo;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.function.Predicate;
 
 public class BinarySearchTree<E> implements BinaryTreeInfo {
     private static class Node<E> {
@@ -19,6 +18,10 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         public Node(E element, Node<E> parent) {
             this.element = element;
             this.parent = parent;
+        }
+
+        public boolean isLeaf() {
+            return left == null && right == null;
         }
 
     }
@@ -87,50 +90,65 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
 
     }
 
-    public void preOrderTraversal(Predicate<E> predicate) {
-        preOrderTraversal(root, predicate);
-    }
-
-    private void preOrderTraversal(Node<E> node, Predicate<E> predicate) {
-        if (node == null || predicate == null) {
+    public void preOrderTraversal(Operation<E> operation) {
+        if (operation == null) {
             return;
         }
-        predicate.test(node.element);
-        preOrderTraversal(node.left, predicate);
-        preOrderTraversal(node.right, predicate);
+        preOrderTraversal(root, operation);
     }
 
-    public void onOrderTraversal(Predicate<E> predicate) {
-        onOrderTraversal(root,predicate);
-    }
-
-    private void onOrderTraversal(Node<E> node, Predicate<E> predicate) {
-        if (node == null || predicate == null) {
+    private void preOrderTraversal(Node<E> node, Operation<E> operation) {
+        if (node == null || operation.isStop) {
             return;
         }
-        onOrderTraversal(node.left,predicate);
-        predicate.test(node.element);
-        onOrderTraversal(node.right,predicate);
+        operation.isStop = operation.operation(node.element);
+        preOrderTraversal(node.left, operation);
+        preOrderTraversal(node.right, operation);
     }
 
-    public void postOrderTraversal(Predicate<E> predicate) {
-        postOrderTraversal(root,predicate);
-    }
-
-    private void postOrderTraversal(Node<E> node, Predicate<E> predicate) {
-        if (node == null) {
+    public void onOrderTraversal(Operation<E> operation) {
+        if (operation == null) {
             return;
         }
-        postOrderTraversal(node.left,predicate);
-        postOrderTraversal(node.right,predicate);
-        predicate.test(node.element);
+        onOrderTraversal(root, operation);
     }
 
-    public void levelOrderTraversal(Predicate<E> predicate) {
-        levelOrderTraversal(root,predicate);
+    private void onOrderTraversal(Node<E> node, Operation<E> operation) {
+        if (node == null || operation.isStop) {
+            return;
+        }
+        onOrderTraversal(node.left, operation);
+        if (operation.isStop) {
+            return;
+        }
+        operation.operation(node.element);
+        onOrderTraversal(node.right, operation);
     }
 
-    private void levelOrderTraversal(Node<E> root, Predicate<E> predicate) {
+    public void postOrderTraversal(Operation<E> operation) {
+        postOrderTraversal(root, operation);
+    }
+
+    private void postOrderTraversal(Node<E> node, Operation<E> operation) {
+        if (node == null || operation.isStop) {
+            return;
+        }
+        postOrderTraversal(node.left, operation);
+        postOrderTraversal(node.right, operation);
+        if (operation.isStop) {
+            return;
+        }
+        operation.operation(node.element);
+    }
+
+    public void levelOrderTraversal(Operation<E> operation) {
+        if (operation == null) {
+            return;
+        }
+        levelOrderTraversal(root, operation);
+    }
+
+    private void levelOrderTraversal(Node<E> root, Operation<E> operation) {
         if (root == null) {
             return;
         }
@@ -138,7 +156,7 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         queue.offer(root);
         while (!queue.isEmpty()) {
             Node<E> node = queue.poll();
-            predicate.test(node.element);
+            operation.operation(node.element);
             if (node.left != null) {
                 queue.offer(node.left);
             }
@@ -158,11 +176,103 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         }
     }
 
+    public int heightRecursion() {
+        return heightRecursion(root);
+    }
+
+    private int heightRecursion(Node<E> node) {
+        if (node == null) {
+            return 0;
+        }
+        return Math.max(height(node.left), height(node.right)) + 1;
+    }
+
+    public int height() {
+        return height(root);
+    }
+
+    private int height(Node<E> node) {
+        if (node == null) {
+            return 0;
+        }
+        Queue<Node<E>> queue = new LinkedList<>();
+        queue.offer(node);
+        int height = 0;
+        //int rowSize = 1;
+        //while (!queue.isEmpty()) {
+        //    Node<E> nodePoll = queue.poll();
+        //    rowSize--;
+        //    if (nodePoll.left != null) {
+        //        queue.offer(nodePoll.left);
+        //    }
+        //    if (nodePoll.right != null) {
+        //        queue.offer(nodePoll.right);
+        //    }
+        //    if (rowSize == 0) {
+        //        height++;
+        //        rowSize = queue.size();
+        //    }
+        //}
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                Node<E> nodePoll = queue.poll();
+                if (nodePoll.left != null) {
+                    queue.offer(nodePoll.left);
+                }
+                if (nodePoll.right != null) {
+                    queue.offer(nodePoll.right);
+                }
+            }
+            height++;
+        }
+        return height;
+    }
+
+    public boolean isCompleteTree() {
+        return isCompleteTree(root);
+    }
+
+    private boolean isCompleteTree(Node<E> node) {
+        if (node == null) {
+            return false;
+        }
+        Queue<Node<E>> queue = new LinkedList<>();
+        queue.offer(node);
+        boolean leaf = false;
+        while (!queue.isEmpty()) {
+            Node<E> pNode = queue.poll();
+            if (leaf && !pNode.isLeaf()) {
+                return false;
+            }
+            if (pNode.left != null) {
+                queue.offer(pNode.left);
+            } else if (pNode.right != null) {
+                return false;
+            }
+
+            if (pNode.right != null) {
+                queue.offer(pNode.right);
+            } else {
+                leaf = true;
+            }
+        }
+        return true;
+    }
+
+
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("BinarySearchTree{");
-        sb.append("root=").append(root);
-        sb.append('}');
+        return toString(root, new StringBuilder(), "");
+    }
+
+    private String toString(Node<E> node, StringBuilder sb, String prefix) {
+        if (node == null) {
+            return "null";
+        }
+        sb.append(prefix).append(node.element).append("\n");
+        toString(node.left, sb, prefix + "[L]");
+        toString(node.right, sb, prefix + "[R]");
         return sb.toString();
     }
 
@@ -185,5 +295,10 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
     public Object string(Object node) {
         return ((Node<E>) node).element;
     }
-    
+
+    public abstract static class Operation<E> {
+        public boolean isStop = false;
+
+        public abstract boolean operation(E element);
+    }
 }
