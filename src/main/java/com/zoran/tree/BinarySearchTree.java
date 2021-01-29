@@ -166,6 +166,44 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         }
     }
 
+    public Node<E> getPredecessor(Node<E> node) {
+        if (node == null) {
+            return null;
+        }
+        //前驱节点在左子树中
+        if (node.left != null) {
+            node = node.left;
+            while (node.right != null) {
+                node = node.right;
+            }
+            return node;
+        }
+        //前驱节点在父节点
+        while (node.parent != null && node.parent.right != node) {
+            node = node.parent;
+        }
+        return node.parent;
+    }
+
+    public Node<E> getSuccessor(Node<E> node) {
+        if (node == null) {
+            return null;
+        }
+        //前驱节点在左子树中
+        if (node.right != null) {
+            node = node.right;
+            while (node.left != null) {
+                node = node.left;
+            }
+            return node;
+        }
+        //前驱节点在父节点
+        while (node.parent != null && node.parent.left != node) {
+            node = node.parent;
+        }
+        return node.parent;
+    }
+
     public boolean contains(E element) {
         return false;
     }
