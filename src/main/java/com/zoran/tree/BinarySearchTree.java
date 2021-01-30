@@ -189,7 +189,6 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         if (node == null) {
             return null;
         }
-        //前驱节点在左子树中
         if (node.right != null) {
             node = node.right;
             while (node.left != null) {
@@ -197,7 +196,6 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
             }
             return node;
         }
-        //前驱节点在父节点
         while (node.parent != null && node.parent.left != node) {
             node = node.parent;
         }
