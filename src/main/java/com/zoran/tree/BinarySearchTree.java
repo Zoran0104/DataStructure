@@ -24,6 +24,10 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
             return left == null && right == null;
         }
 
+        public boolean hasTwoChildren() {
+            return left != null && right != null;
+        }
+
     }
 
     private int size;
@@ -87,7 +91,60 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
     }
 
     public void remove(E element) {
+        remove(node(element));
+    }
 
+    private void remove(Node<E> node) {
+        if (node == null) {
+            return;
+        }
+        if (node.hasTwoChildren()) {
+            Node<E> successor = getSuccessor(node);
+            node.element = successor.element;
+            node = successor;
+        }
+        Node<E> replacement = node.left != null ? node.left : node.right;
+        if (replacement != null) {
+            replacement.parent = node.parent;
+            if (node.parent == null) {
+                root = replacement;
+            } else if (node == node.parent.left) {
+                node.parent.left = replacement;
+            } else if (node == node.parent.right) {
+                node.parent.right = replacement;
+            }
+        } else if (node.parent == null) {
+            //叶子节点且root节点
+            root = null;
+        }else{
+            //叶子节点且普通节点
+            if (node == node.parent.right) {
+                node.parent.right = null;
+            }else{
+                node.parent.left = null;
+            }
+        }
+    }
+
+    /**
+     * 查找值为element的节点
+     *
+     * @param element Node中的值
+     * @return
+     */
+    private Node<E> node(E element) {
+        Node<E> node = root;
+        while (node != null) {
+            int compare = compare(element, node.element);
+            if (compare == 0) {
+                return node;
+            } else if (compare > 0) {
+                node = node.right;
+            } else {
+                node = node.left;
+            }
+        }
+        return null;
     }
 
     public void preOrderTraversal(Operation<E> operation) {
