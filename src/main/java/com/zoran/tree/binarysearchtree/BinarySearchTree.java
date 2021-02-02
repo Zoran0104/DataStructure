@@ -7,7 +7,6 @@ import java.util.Comparator;
 public class BinarySearchTree<E> extends BinaryTree {
 
     public BinarySearchTree() {
-        super();
     }
 
     public BinarySearchTree(Comparator<E> comparator) {
@@ -38,6 +37,7 @@ public class BinarySearchTree<E> extends BinaryTree {
                 node = node.right;
             } else {
                 node.element = element;
+                return;
             }
         }
         if (compare > 0) {

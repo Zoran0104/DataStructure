@@ -59,6 +59,7 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
         checkElement(element);
         if (root == null) {
             root = new Node<>(element, null);
+            afterAdd(root);
             return;
         }
         Node<E> node = root;
@@ -73,14 +74,21 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
                 node = node.right;
             } else {
                 node.element = element;
+                return;
             }
         }
+        Node<E> newNode = new Node<>(element, parent);
         if (compare > 0) {
-            parent.left = new Node<>(element, parent);
+            parent.left = newNode;
         } else if (compare < 0) {
-            parent.right = new Node<>(element, parent);
+            parent.right = newNode;
         }
         size++;
+        afterAdd(newNode);
+    }
+
+    protected void afterAdd(Node<E> node) {
+
     }
 
     private int compare(E e1, E e2) {
