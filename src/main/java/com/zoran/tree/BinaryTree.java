@@ -27,6 +27,13 @@ public class BinaryTree<E> implements BinaryTreeInfo {
             return left != null && right != null;
         }
 
+        public boolean isLeftChild() {
+            return parent != null && this == parent.left;
+        }
+
+        public boolean isRightChild() {
+            return parent != null && this == parent.right;
+        }
     }
 
     protected int size;
@@ -244,6 +251,10 @@ public class BinaryTree<E> implements BinaryTreeInfo {
             }
         }
         return true;
+    }
+
+    protected Node<E> createNode(E element,Node<E> parent) {
+        return new Node<>(element, parent);
     }
 
     @Override
