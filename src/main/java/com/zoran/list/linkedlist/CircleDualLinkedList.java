@@ -12,7 +12,6 @@ public class CircleDualLinkedList<E> extends AbstractLinkedList<E> {
             this.element = element;
             this.next = next;
         }
-
     }
 
     private Node<E> first;
@@ -37,51 +36,13 @@ public class CircleDualLinkedList<E> extends AbstractLinkedList<E> {
 
     @Override
     public void add(int index, E element) {
-        rangeCheckForAdd(index);
-        if (index == size) {
-            //往最后一个位置添加元素或没有元素的时候添加元素
-            last = new Node<>(last, element, first);
-            //要考虑添加的是否为第一个元素
-            if (last.prev == null) {
-                first = last;
-                first.next = first;
-            } else {
-                last.prev.next = last;
-                first.prev = last;
-            }
-        } else {
-            Node<E> nodeByIndex = getNodeByIndex(index);
-            Node<E> node = new Node<>(nodeByIndex.prev, element, nodeByIndex);
-            nodeByIndex.prev = node;
-            if (index == 0) {
-                first = node;
-                last.next = first;
-            } else {
-                nodeByIndex.prev.next = node;
-            }
-        }
-        size++;
+        //todo
     }
 
     @Override
     public E remove(int index) {
-        rangeCheck(index);
-        Node<E> node = getNodeByIndex(index);
-        if (size != 1) {
-            node.prev.next = node.next;
-            node.next.prev = node.prev;
-            if (node == first) {
-                first = node.next;
-            }
-            if (node == last) {
-                last = node.prev;
-            }
-        } else {
-            first = null;
-            last = null;
-        }
-        size--;
-        return node.element;
+        //todo
+        return null;
     }
 
     @Override
