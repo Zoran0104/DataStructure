@@ -36,63 +36,18 @@ public class DualLinkedList<E> extends AbstractLinkedList<E> {
 
     @Override
     public void add(int index, E element) {
-        rangeCheckForAdd(index);
-        if (index == size) {
-            //往最后一个位置添加元素或没有元素的时候添加元素
-            last = new Node<>(last, element, null);
-            //要考虑添加的是否为第一个元素
-            if (last.prev == null) {
-                first = last;
-            } else {
-                last.prev.next = last;
-            }
-        } else {
-            Node<E> nodeByIndex = getNodeByIndex(index);
-            Node<E> node = new Node<>(nodeByIndex.prev, element, nodeByIndex);
-            nodeByIndex.prev = node;
-            if (index == 0) {
-                first = node;
-            } else {
-                nodeByIndex.prev.next = node;
-            }
-        }
-        size++;
+        //todo
     }
 
     @Override
     public E remove(int index) {
-        rangeCheck(index);
-        Node<E> node = getNodeByIndex(index);
-        if (node.prev == null) {
-            first = node.next;
-        } else {
-            node.prev.next = node.next;
-        }
-
-        if (node.next == null) {
-            last = node.prev;
-        } else {
-            node.next.prev = node.prev;
-        }
-        size--;
-        return node.element;
+        //todo
+        return null;
     }
 
     @Override
     public Node<E> getNodeByIndex(int index) {
-        rangeCheck(index);
-        Node<E> node;
-        if (index < (size >> 1)) {
-            node = first;
-            for (int i = 0; i < index; i++) {
-                node = node.next;
-            }
-        } else {
-            node = last;
-            for (int i = size - 1; i > index; i--) {
-                node = node.prev;
-            }
-        }
-        return node;
+        //todo
+        return null;
     }
 }
