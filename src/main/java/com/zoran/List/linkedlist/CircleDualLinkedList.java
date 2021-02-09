@@ -21,8 +21,6 @@ public class CircleDualLinkedList<E> extends AbstractLinkedList<E> {
 
     @Override
     public void clear() {
-        //理论上这是没必要进行断开各个链表的节点链接，
-        //但避免有迭代器对象指向中间元素导致元素无法被gc回收
         Node<E> node = first;
         Node<E> tmp;
         while (node != null) {
