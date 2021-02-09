@@ -1,7 +1,5 @@
 package com.zoran.List;
 
-import java.util.logging.Logger;
-
 public class ArrayList<E> extends AbstractList<E> {
 
     private E[] elements;
@@ -88,7 +86,7 @@ public class ArrayList<E> extends AbstractList<E> {
     private void ensureCapacity(int newCapacity) {
         int oldCapacity = elements.length;
         if (newCapacity < oldCapacity) {
-            return ;
+            return;
         }
         //移位操作符的优先级是比加号低的!!!!
         newCapacity = (oldCapacity >> 1) + oldCapacity;
@@ -104,7 +102,6 @@ public class ArrayList<E> extends AbstractList<E> {
      * 数组缩容
      */
     private void trim() {
-        Logger arrayList = Logger.getLogger("ArrayList");
         int oldCapacity = elements.length;
         int newCapacity = oldCapacity >> 1;
         //临界值size和新容量是否相等时也进行缩容
@@ -116,8 +113,8 @@ public class ArrayList<E> extends AbstractList<E> {
             System.arraycopy(elements, 0, newElements, 0, size);
         }
         elements = newElements;
-        System.out.println("trim:"+newCapacity+"origin:"+oldCapacity);
     }
+
     @Override
     public String toString() {
         // size=3, [99, 88, 77]
