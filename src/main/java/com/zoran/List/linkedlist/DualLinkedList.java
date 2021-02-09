@@ -1,46 +1,22 @@
 package com.zoran.List.linkedlist;
 
-import com.zoran.List.AbstractList;
-
-public class DualLinkedList<E> extends AbstractList<E> {
-    private static class Node<E> {
-        E element;
+public class DualLinkedList<E> extends AbstractLinkedList<E> {
+    private static class Node<E> extends AbstractLinkedList.Node<E> {
         Node<E> prev;
+        E element;
         Node<E> next;
 
-        public Node(Node<E> prev, E element, Node<E> node) {
+        public Node(Node<E> prev, E element, Node<E> next) {
+            super(element, next);
             this.prev = prev;
             this.element = element;
-            this.next = node;
-        }
-
-        @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder();
-            if (prev != null) {
-                sb.append(prev.element);
-            } else {
-                sb.append("null");
-            }
-            sb.append("_").append(element).append("_");
-            if (next != null) {
-                sb.append(next.element);
-            } else {
-                sb.append("null");
-            }
-            return sb.toString();
+            this.next = next;
         }
     }
 
     private Node<E> first;
     private Node<E> last;
 
-    public DualLinkedList() {
-    }
-
-    public DualLinkedList(Node<E> first) {
-        this.first = first;
-    }
 
     @Override
     public void clear() {
@@ -58,19 +34,6 @@ public class DualLinkedList<E> extends AbstractList<E> {
         first = null;
         last = null;
         size = 0;
-    }
-
-    @Override
-    public E get(int index) {
-        return getNodeByIndex(index).element;
-    }
-
-    @Override
-    public E set(int index, E element) {
-        Node<E> nodeByIndex = getNodeByIndex(index);
-        E oldValue = nodeByIndex.element;
-        nodeByIndex.element = element;
-        return oldValue;
     }
 
     @Override
@@ -118,24 +81,6 @@ public class DualLinkedList<E> extends AbstractList<E> {
     }
 
     @Override
-    public int indexOf(E element) {
-        Node<E> node = first;
-        if (null == element) {
-            for (int i = 0; i < size; i++) {
-                if (null == node.element) {
-                    return i;
-                }
-                node = node.next;
-            }
-        }
-        for (int i = 0; i < size; i++) {
-            if (element.equals(node.element)) {
-                return i;
-            }
-        }
-        return ELEMENT_NOT_FOUND;
-    }
-
     public Node<E> getNodeByIndex(int index) {
         rangeCheck(index);
         Node<E> node;
@@ -151,47 +96,5 @@ public class DualLinkedList<E> extends AbstractList<E> {
             }
         }
         return node;
-    }
-
-    //逆序链表-递归
-    public Node<E> reverse(Node head) {
-        Node<E> node = head;
-        if (node == null || node.next == null) {
-            return node;
-        }
-        Node<E> reverse = reverse(node.next);
-        node.next.next = reverse;
-        node.next = null;
-        return reverse;
-    }
-
-    //逆序链表-头插法
-    public DualLinkedList<E> reverse() {
-        Node<E> node = first;
-
-        if (node == null || node.next == null) {
-            return new DualLinkedList<>(node);
-        }
-        Node<E> newNode = null;
-        while (node != null) {
-            Node<E> next = node.next;
-            node.next = newNode;
-            newNode = node;
-            node = next;
-        }
-        return new DualLinkedList<E>(newNode);
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        Node<E> head = first;
-        while (head != null) {
-            stringBuilder.append(head).append("\t");
-            head = head.next;
-        }
-        return "LinkedList{" +
-                stringBuilder.toString() +
-                '}';
     }
 }
