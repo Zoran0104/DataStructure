@@ -1,4 +1,4 @@
-package com.zoran.tree.Sort;
+package com.zoran.Sort;
 
 public class BubbleSort {
 
