@@ -80,9 +80,9 @@ public class BinarySearchTree<E> extends BinaryTree {
             replacement.parent = node.parent;
             if (node.parent == null) {
                 root = replacement;
-            } else if (node == node.parent.left) {
+            } else if (node.isLeftChild()) {
                 node.parent.left = replacement;
-            } else if (node == node.parent.right) {
+            } else if (node.isRightChild()) {
                 node.parent.right = replacement;
             }
         } else if (node.parent == null) {
@@ -90,10 +90,10 @@ public class BinarySearchTree<E> extends BinaryTree {
             root = null;
         }else{
             //叶子节点且普通节点
-            if (node == node.parent.right) {
-                node.parent.right = null;
-            }else{
+            if (node.isLeftChild()) {
                 node.parent.left = null;
+            }else{
+                node.parent.right = null;
             }
         }
     }
