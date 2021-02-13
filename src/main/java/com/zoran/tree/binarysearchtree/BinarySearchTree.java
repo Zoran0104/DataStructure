@@ -85,9 +85,11 @@ public class BinarySearchTree<E> extends BinaryTree {
             } else if (node.isRightChild()) {
                 node.parent.right = replacement;
             }
+            afterRemove(node);
         } else if (node.parent == null) {
             //叶子节点且root节点
             root = null;
+            afterRemove(node);
         }else{
             //叶子节点且普通节点
             if (node.isLeftChild()) {
@@ -95,9 +97,13 @@ public class BinarySearchTree<E> extends BinaryTree {
             }else{
                 node.parent.right = null;
             }
+            afterRemove(node);
         }
     }
 
+    protected void afterRemove(Node<E> node) {
+
+    }
     /**
      * 查找值为element的节点
      *

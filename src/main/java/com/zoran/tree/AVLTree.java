@@ -62,6 +62,17 @@ public class AVLTree<E> extends BinarySearchTree<E> {
     }
 
     @Override
+    protected void afterRemove(Node<E> node) {
+        while ((node = node.parent) != null) {
+            if (isBalance(node)) {
+                updateHeight(node);
+            } else {
+                rebalance(node);
+            }
+        }
+    }
+
+    @Override
     protected Node<E> createNode(Object element, Node parent) {
         return new AVLNode<E>((E) element, parent);
     }
@@ -85,7 +96,61 @@ public class AVLTree<E> extends BinarySearchTree<E> {
             }
             rotateLeft(grand);
         }
+    }
 
+    private void rebalance2(Node<E> grand) {
+        Node<E> parent = ((AVLNode<E>) grand).tallerChild();
+        Node<E> node = ((AVLNode<E>) parent).tallerChild();
+        if (parent.isLeftChild()) {
+            if (node.isLeftChild()) {
+                rotate(grand, node.left, node, node.right, parent, parent.right, grand, grand.right);
+            } else {
+                rotate(grand, parent.left, parent, node.left, node, node.right, grand, grand.right);
+            }
+
+        } else {
+            if (node.isLeftChild()) {
+                rotate(grand, grand.left, grand, node.left, node, node.right, parent, parent.right);
+            } else {
+                rotate(grand, grand.left, grand, parent.left, parent, node.left, node, node.right);
+            }
+        }
+    }
+
+    private void rotate(Node<E> r,Node<E> a,Node<E> b,Node<E> c,Node<E> d,Node<E> e,Node<E> f,Node<E> g) {
+        d.parent = r.parent;
+        if (r.isLeftChild()) {
+            r.parent.left = d;
+        } else if (r.isRightChild()) {
+            r.parent.right = d;
+        } else {
+            root = d;
+        }
+
+        b.left = a;
+        b.right = c;
+        if (a != null) {
+            a.parent = b;
+        }
+        if (c != null) {
+            c.parent = b;
+        }
+        updateHeight(b);
+
+        f.left = e;
+        f.right = g;
+        if (e != null) {
+            e.parent = f;
+        }
+        if (g != null) {
+            g.parent = f;
+        }
+        updateHeight(f);
+
+        d.left = b;
+        d.right = f;
+        b.parent = d;
+        f.parent = d;
     }
 
     private void rotateLeft(Node<E> node) {
