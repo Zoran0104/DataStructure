@@ -20,35 +20,7 @@ public class BinarySearchTree<E> extends BinaryTree {
     }
 
     public void add(E element) {
-        checkElement(element);
-        if (root == null) {
-            root = createNode(element, null);
-            afterAdd(root);
-            return;
-        }
-        Node<E> node = root;
-        int compare = 0;
-        Node<E> parent = null;
-        while (node != null) {
-            compare = compare(node.element, element);
-            parent = node;
-            if (compare > 0) {
-                node = node.left;
-            } else if (compare < 0) {
-                node = node.right;
-            } else {
-                node.element = element;
-                return;
-            }
-        }
-        Node<E> newNode = createNode(element, parent);
-        if (compare > 0) {
-            parent.left = newNode;
-        } else if (compare < 0) {
-            parent.right = newNode;
-        }
-        size++;
-        afterAdd(newNode);
+        //todo
     }
 
     protected void afterAdd(Node<E> node) {
@@ -67,35 +39,7 @@ public class BinarySearchTree<E> extends BinaryTree {
     }
 
     private void remove(Node<E> node) {
-        if (node == null) {
-            return;
-        }
-        if (node.hasTwoChildren()) {
-            Node<E> successor = getSuccessor(node);
-            node.element = successor.element;
-            node = successor;
-        }
-        Node<E> replacement = node.left != null ? node.left : node.right;
-        if (replacement != null) {
-            replacement.parent = node.parent;
-            if (node.parent == null) {
-                root = replacement;
-            } else if (node.isLeftChild()) {
-                node.parent.left = replacement;
-            } else if (node.isRightChild()) {
-                node.parent.right = replacement;
-            }
-        } else if (node.parent == null) {
-            //叶子节点且root节点
-            root = null;
-        }else{
-            //叶子节点且普通节点
-            if (node.isLeftChild()) {
-                node.parent.left = null;
-            }else{
-                node.parent.right = null;
-            }
-        }
+        //todo
     }
 
     /**

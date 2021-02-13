@@ -116,57 +116,17 @@ public class BinaryTree<E> implements BinaryTreeInfo {
     }
 
     private void levelOrderTraversal(Node<E> root, Operation<E> operation) {
-        if (root == null) {
-            return;
-        }
-        Queue<Node<E>> queue = new LinkedList<>();
-        queue.offer(root);
-        while (!queue.isEmpty()) {
-            Node<E> node = queue.poll();
-            operation.operation(node.element);
-            if (node.left != null) {
-                queue.offer(node.left);
-            }
-            if (node.right != null) {
-                queue.offer(node.right);
-            }
-        }
+        //todo
     }
 
     public Node<E> getPredecessor(Node<E> node) {
-        if (node == null) {
-            return null;
-        }
-        //前驱节点在左子树中
-        if (node.left != null) {
-            node = node.left;
-            while (node.right != null) {
-                node = node.right;
-            }
-            return node;
-        }
-        //前驱节点在父节点
-        while (node.parent != null && node.parent.right != node) {
-            node = node.parent;
-        }
-        return node.parent;
+        //todo
+        return null;
     }
 
     public Node<E> getSuccessor(Node<E> node) {
-        if (node == null) {
-            return null;
-        }
-        if (node.right != null) {
-            node = node.right;
-            while (node.left != null) {
-                node = node.left;
-            }
-            return node;
-        }
-        while (node.parent != null && node.parent.left != node) {
-            node = node.parent;
-        }
-        return node.parent;
+        //todo
+        return null;
     }
 
     public int heightRecursion() {
@@ -185,41 +145,8 @@ public class BinaryTree<E> implements BinaryTreeInfo {
     }
 
     private int height(Node<E> node) {
-        if (node == null) {
-            return 0;
-        }
-        Queue<Node<E>> queue = new LinkedList<>();
-        queue.offer(node);
-        int height = 0;
-        //int rowSize = 1;
-        //while (!queue.isEmpty()) {
-        //    Node<E> nodePoll = queue.poll();
-        //    rowSize--;
-        //    if (nodePoll.left != null) {
-        //        queue.offer(nodePoll.left);
-        //    }
-        //    if (nodePoll.right != null) {
-        //        queue.offer(nodePoll.right);
-        //    }
-        //    if (rowSize == 0) {
-        //        height++;
-        //        rowSize = queue.size();
-        //    }
-        //}
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            for (int i = 0; i < size; i++) {
-                Node<E> nodePoll = queue.poll();
-                if (nodePoll.left != null) {
-                    queue.offer(nodePoll.left);
-                }
-                if (nodePoll.right != null) {
-                    queue.offer(nodePoll.right);
-                }
-            }
-            height++;
-        }
-        return height;
+        //todo
+        return 0;
     }
 
     public boolean isCompleteTree() {
@@ -227,30 +154,8 @@ public class BinaryTree<E> implements BinaryTreeInfo {
     }
 
     private boolean isCompleteTree(Node<E> node) {
-        if (node == null) {
-            return false;
-        }
-        Queue<Node<E>> queue = new LinkedList<>();
-        queue.offer(node);
-        boolean leaf = false;
-        while (!queue.isEmpty()) {
-            Node<E> pNode = queue.poll();
-            if (leaf && !pNode.isLeaf()) {
-                return false;
-            }
-            if (pNode.left != null) {
-                queue.offer(pNode.left);
-            } else if (pNode.right != null) {
-                return false;
-            }
-
-            if (pNode.right != null) {
-                queue.offer(pNode.right);
-            } else {
-                leaf = true;
-            }
-        }
-        return true;
+        //todo
+        return false;
     }
 
     protected Node<E> createNode(E element,Node<E> parent) {
