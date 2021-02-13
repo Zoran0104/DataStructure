@@ -20,7 +20,7 @@ public class QueueByStack<E> {
 
     public E deQueue() {
         if (outStack.isEmpty()) {
-            while (inStack.isEmpty()) {
+            while (!inStack.isEmpty()) {
                 outStack.push(inStack.pop());
             }
         }
@@ -29,7 +29,7 @@ public class QueueByStack<E> {
 
     public E front() {
         if (outStack.isEmpty()) {
-            while (inStack.size() != 0) {
+            while (!inStack.isEmpty()) {
                 outStack.push(inStack.pop());
             }
         }
