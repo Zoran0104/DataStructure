@@ -151,6 +151,4 @@ public class BinarySearchTree<E> extends BinaryTree {
         toString(node.right, sb, prefix + "[R]");
         return sb.toString();
     }
-
-
 }
