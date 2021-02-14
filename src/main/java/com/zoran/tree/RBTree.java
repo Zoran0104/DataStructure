@@ -1,12 +1,11 @@
 package com.zoran.tree;
 
-import com.zoran.tree.binarysearchtree.BinarySearchTree;
-
 import java.util.Comparator;
 
 public class RBTree<E> extends BinarySearchTree<E> {
     private static class RBNode<E> extends Node<E> {
-        boolean color;
+        //新添加的节点默认为红色 能够尽快让红黑树的性质满足
+        boolean color = RED;
 
         public RBNode(E element, Node<E> parent) {
             super(element, parent);

@@ -1,4 +1,4 @@
-package com.zoran.tree.binarysearchtree;
+package com.zoran.tree;
 
 
 import com.zoran.tree.BinaryTree;
