@@ -1,7 +1,6 @@
 package com.zoran.tree;
 
 
-import com.zoran.tree.BinaryTree;
 import java.util.Comparator;
 
 public class BinarySearchTree<E> extends BinaryTree {
@@ -85,11 +84,11 @@ public class BinarySearchTree<E> extends BinaryTree {
             } else if (node.isRightChild()) {
                 node.parent.right = replacement;
             }
-            afterRemove(node);
+            afterRemove(node, replacement);
         } else if (node.parent == null) {
             //叶子节点且root节点
             root = null;
-            afterRemove(node);
+            afterRemove(node, null);
         }else{
             //叶子节点且普通节点
             if (node.isLeftChild()) {
@@ -97,11 +96,11 @@ public class BinarySearchTree<E> extends BinaryTree {
             }else{
                 node.parent.right = null;
             }
-            afterRemove(node);
+            afterRemove(node, null);
         }
     }
 
-    protected void afterRemove(Node<E> node) {
+    protected void afterRemove(Node<E> node,Node<E> replacement) {
 
     }
     /**
