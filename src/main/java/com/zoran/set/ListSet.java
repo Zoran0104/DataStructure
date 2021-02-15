@@ -1,7 +1,7 @@
-package com.zoran.Set;
+package com.zoran.set;
 
-import com.zoran.List.List;
-import com.zoran.List.linkedlist.SingleLinkedList;
+import com.zoran.list.List;
+import com.zoran.list.linkedlist.SingleLinkedList;
 
 
 

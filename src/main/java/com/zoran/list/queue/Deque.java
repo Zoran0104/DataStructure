@@ -1,4 +1,4 @@
-package com.zoran.List.queue;
+package com.zoran.list.queue;
 
 import java.util.LinkedList;
 import java.util.List;

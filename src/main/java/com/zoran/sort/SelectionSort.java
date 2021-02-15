@@ -1,4 +1,4 @@
-package com.zoran.Sort;
+package com.zoran.sort;
 
 public class SelectionSort {
     public static void selectionSort(int[] array) {

@@ -1,4 +1,4 @@
-package com.zoran.List;
+package com.zoran.list;
 
 public class Stack<E> {
     private ArrayList<E> stack = new ArrayList<>(10);

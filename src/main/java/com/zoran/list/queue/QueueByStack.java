@@ -1,6 +1,6 @@
-package com.zoran.List.queue;
+package com.zoran.list.queue;
 
-import com.zoran.List.Stack;
+import com.zoran.list.Stack;
 
 public class QueueByStack<E> {
     private Stack<E> inStack = new Stack<>();

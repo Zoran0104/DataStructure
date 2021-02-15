@@ -1,4 +1,4 @@
-package com.zoran.List;
+package com.zoran.list;
 
 public interface List<E> {
     static final int ELEMENT_NOT_FOUND = -1;

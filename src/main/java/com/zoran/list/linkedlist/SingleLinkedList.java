@@ -1,15 +1,11 @@
-package com.zoran.List.linkedlist;
+package com.zoran.list.linkedlist;
 
-public class CircleSingleLinkedList<E> extends AbstractLinkedList<E> {
+public class SingleLinkedList<E> extends AbstractLinkedList<E> {
     @Override
     public void add(int index, E element) {
         rangeCheckForAdd(index);
         if (index == 0) {
-            Node newNode = new Node<>(element, first);
-            //注意一开始链表为空的情况
-            Node<E> node = size == 0 ? newNode : getNodeByIndex(size - 1);
-            first = newNode;
-            node.next = first;
+            first = new Node<>(element, first);
         } else {
             Node<E> nodeByIndex = getNodeByIndex(index - 1);
             nodeByIndex.next = new Node<>(element, nodeByIndex.next);
@@ -22,9 +18,7 @@ public class CircleSingleLinkedList<E> extends AbstractLinkedList<E> {
         rangeCheck(index);
         Node<E> node = first;
         if (index == 0) {
-            Node<E> nodeByIndex = getNodeByIndex(size - 1);
             first = first.next;
-            nodeByIndex.next = first;
         } else {
             Node<E> prev = getNodeByIndex(index - 1);
             node = prev.next;
@@ -34,13 +28,21 @@ public class CircleSingleLinkedList<E> extends AbstractLinkedList<E> {
         return node.element;
     }
 
+
     @Override
-    public Node<E> getNodeByIndex(int index) {
-        rangeCheck(index);
-        Node<E> node = first;
-        for (int i = 0; i < index; i++) {
-            node = node.next;
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        Node<E> head = first;
+        while (head != null) {
+            if (head == first) {
+                stringBuilder.append(head.element);
+            } else {
+                stringBuilder.append(",").append(head.element);
+            }
+            head = head.next;
         }
-        return node;
+        return "LinkedList{" +
+                stringBuilder.toString() +
+                '}';
     }
 }

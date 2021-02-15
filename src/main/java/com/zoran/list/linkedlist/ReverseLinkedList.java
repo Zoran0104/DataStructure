@@ -1,6 +1,6 @@
-package com.zoran.List.linkedlist;
+package com.zoran.list.linkedlist;
 
-import com.zoran.List.linkedlist.AbstractLinkedList.Node;
+import com.zoran.list.linkedlist.AbstractLinkedList.Node;
 
 public class ReverseLinkedList {
     //逆序链表-递归
