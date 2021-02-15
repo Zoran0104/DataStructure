@@ -62,11 +62,13 @@ public abstract class AbstractLinkedList<E> extends AbstractList<E> {
                 }
                 node = node.next;
             }
+            return ELEMENT_NOT_FOUND;
         }
         for (int i = 0; i < size; i++) {
             if (element.equals(node.element)) {
                 return i;
             }
+            node = node.next;
         }
         return ELEMENT_NOT_FOUND;
     }
