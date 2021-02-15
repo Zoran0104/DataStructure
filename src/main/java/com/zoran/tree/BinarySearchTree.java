@@ -23,6 +23,7 @@ public class BinarySearchTree<E> extends BinaryTree {
         if (root == null) {
             root = createNode(element, null);
             afterAdd(root);
+            size++;
             return;
         }
         Node<E> node = root;
