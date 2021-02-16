@@ -26,9 +26,9 @@ public class TreeMap<K, V> implements Map<K, V> {
         boolean color = RED;
         Entry<K, V> left;
         Entry<K, V> right;
-        public Entry<K,V> parent;
+        public Entry<K, V> parent;
 
-        public Entry(K key,V value, Entry<K,V> parent) {
+        public Entry(K key, V value, Entry<K, V> parent) {
             this.key = key;
             this.value = value;
             this.parent = parent;
@@ -50,7 +50,7 @@ public class TreeMap<K, V> implements Map<K, V> {
             return parent != null && this == parent.right;
         }
 
-        public Entry<K,V> sibling() {
+        public Entry<K, V> sibling() {
             if (isLeftChild()) {
                 return parent.right;
             }
@@ -60,8 +60,10 @@ public class TreeMap<K, V> implements Map<K, V> {
             return null;
         }
     }
-    protected int size;
-    protected Entry<K,V> root;
+
+    private int size;
+    private Entry<K, V> root;
+
     @Override
     public int size() {
         return size;
@@ -71,6 +73,7 @@ public class TreeMap<K, V> implements Map<K, V> {
     public boolean isEmpty() {
         return size == 0;
     }
+
     @Override
     public void clear() {
 
@@ -85,9 +88,9 @@ public class TreeMap<K, V> implements Map<K, V> {
             size++;
             return null;
         }
-        Entry<K,V> entry = root;
+        Entry<K, V> entry = root;
         int compare = 0;
-        Entry<K,V> parent = null;
+        Entry<K, V> parent = null;
         while (entry != null) {
             compare = compare(entry.key, key);
             parent = entry;
@@ -112,8 +115,9 @@ public class TreeMap<K, V> implements Map<K, V> {
         afterPut(newEntry);
         return null;
     }
-    protected void afterPut(Entry<K,V> entry) {
-        Entry<K,V> parent = entry.parent;
+
+    private void afterPut(Entry<K, V> entry) {
+        Entry<K, V> parent = entry.parent;
         //添加节点为根节点的时候
         if (parent == null) {
             black(entry);
@@ -123,9 +127,9 @@ public class TreeMap<K, V> implements Map<K, V> {
         if (isBlack(parent)) {
             return;
         }
-        Entry<K,V> uncle = parent.sibling();
+        Entry<K, V> uncle = parent.sibling();
         //此处是迭代的结果，因为后续的每种情况都要对grand染色为red
-        Entry<K,V> grand = red(parent.parent);
+        Entry<K, V> grand = red(parent.parent);
         if (isRed(uncle)) {
             black(parent);
             black(uncle);
@@ -150,6 +154,7 @@ public class TreeMap<K, V> implements Map<K, V> {
             rotateLeft(grand);
         }
     }
+
     @Override
     public V get(K key) {
         return Optional.ofNullable(entry(key)).orElseThrow().value;
@@ -174,7 +179,7 @@ public class TreeMap<K, V> implements Map<K, V> {
         queue.offer(root);
         while (!queue.isEmpty()) {
             Entry<K, V> entry = queue.poll();
-            if (valEquals(entry.value,value)) {
+            if (valEquals(entry.value, value)) {
                 return true;
             }
             if (entry.left != null) {
@@ -199,7 +204,7 @@ public class TreeMap<K, V> implements Map<K, V> {
         traversal(root, visitor);
     }
 
-    private void traversal(Entry<K,V> entry, Visitor<K,V> visitor) {
+    private void traversal(Entry<K, V> entry, Visitor<K, V> visitor) {
         if (entry == null || visitor.stop) {
             return;
         }
@@ -224,7 +229,7 @@ public class TreeMap<K, V> implements Map<K, V> {
         return ((Comparable<K>) e1).compareTo(e2);
     }
 
-    private Entry<K,V> color(Entry<K,V> entry, boolean color) {
+    private Entry<K, V> color(Entry<K, V> entry, boolean color) {
         if (entry == null) {
             return null;
         }
@@ -232,43 +237,43 @@ public class TreeMap<K, V> implements Map<K, V> {
         return entry;
     }
 
-    private Entry<K,V> red(Entry<K,V> entry) {
+    private Entry<K, V> red(Entry<K, V> entry) {
         return color(entry, RED);
     }
 
-    private Entry<K,V> black(Entry<K,V> entry) {
+    private Entry<K, V> black(Entry<K, V> entry) {
         return color(entry, BLACK);
     }
 
-    private boolean colorOf(Entry<K,V> entry) {
+    private boolean colorOf(Entry<K, V> entry) {
         return entry == null ? BLACK : entry.color;
     }
 
-    private boolean isBlack(Entry<K,V> entry) {
+    private boolean isBlack(Entry<K, V> entry) {
         return colorOf(entry) == BLACK;
     }
 
-    private boolean isRed(Entry<K,V> entry) {
+    private boolean isRed(Entry<K, V> entry) {
         return colorOf(entry) == RED;
     }
 
-    protected void rotateLeft(Entry<K,V> entry) {
-        Entry<K,V> parent = entry.right;
-        Entry<K,V> child = parent.left;
+    private void rotateLeft(Entry<K, V> entry) {
+        Entry<K, V> parent = entry.right;
+        Entry<K, V> child = parent.left;
         entry.right = child;
         parent.left = entry;
         afterRotate(entry, parent, child);
     }
 
-    protected void rotateRight(Entry<K,V> entry) {
-        Entry<K,V> parent = entry.left;
-        Entry<K,V> child = parent.right;
+    private void rotateRight(Entry<K, V> entry) {
+        Entry<K, V> parent = entry.left;
+        Entry<K, V> child = parent.right;
         entry.left = child;
         parent.right = entry;
         afterRotate(entry, parent, child);
     }
 
-    protected void afterRotate(Entry<K,V> entry, Entry<K,V> parent, Entry<K,V> child) {
+    private void afterRotate(Entry<K, V> entry, Entry<K, V> parent, Entry<K, V> child) {
         parent.parent = entry.parent;
         if (entry.isLeftChild()) {
             entry.parent.left = parent;
@@ -283,8 +288,8 @@ public class TreeMap<K, V> implements Map<K, V> {
         entry.parent = parent;
     }
 
-    private Entry<K,V> entry(K key) {
-        Entry<K,V> entry = root;
+    private Entry<K, V> entry(K key) {
+        Entry<K, V> entry = root;
         while (entry != null) {
             int compare = compare(key, entry.key);
             if (compare == 0) {
@@ -297,18 +302,18 @@ public class TreeMap<K, V> implements Map<K, V> {
         }
         return null;
     }
-    
-    private V remove(Entry<K,V> entry) {
+
+    private V remove(Entry<K, V> entry) {
         if (entry == null) {
             return null;
         }
         V oldValue = entry.value;
         if (entry.hasTwoChildren()) {
-            Entry<K,V> successor = getSuccessor(entry);
+            Entry<K, V> successor = getSuccessor(entry);
             entry.key = successor.key;
             entry = successor;
         }
-        Entry<K,V> replacement = entry.left != null ? entry.left : entry.right;
+        Entry<K, V> replacement = entry.left != null ? entry.left : entry.right;
         if (replacement != null) {
             replacement.parent = entry.parent;
             if (entry.parent == null) {
@@ -323,11 +328,11 @@ public class TreeMap<K, V> implements Map<K, V> {
             //叶子节点且root节点
             root = null;
             afterRemove(entry, null);
-        }else{
+        } else {
             //叶子节点且普通节点
             if (entry.isLeftChild()) {
                 entry.parent.left = null;
-            }else{
+            } else {
                 entry.parent.right = null;
             }
             afterRemove(entry, null);
@@ -335,7 +340,7 @@ public class TreeMap<K, V> implements Map<K, V> {
         return oldValue;
     }
 
-    private void afterRemove(Entry<K,V> entry, Entry<K,V> replacement) {
+    private void afterRemove(Entry<K, V> entry, Entry<K, V> replacement) {
         //如果删除的节点是红色
         if (isRed(entry)) {
             return;
@@ -345,14 +350,14 @@ public class TreeMap<K, V> implements Map<K, V> {
             black(replacement);
             return;
         }
-        Entry<K,V> parent = entry.parent;
+        Entry<K, V> parent = entry.parent;
         //删除的是根节点
         if (parent == null) {
             return;
         }
         //删除的是黑色叶子节点
-        boolean left = parent.left==null||entry.isLeftChild();
-        Entry<K,V> sibling = left ? parent.right : parent.left;
+        boolean left = parent.left == null || entry.isLeftChild();
+        Entry<K, V> sibling = left ? parent.right : parent.left;
         if (left) {
             if (isRed(sibling)) {
                 black(sibling);
@@ -408,7 +413,7 @@ public class TreeMap<K, V> implements Map<K, V> {
         }
     }
 
-    private Entry<K,V> getSuccessor(Entry<K,V> entry) {
+    private Entry<K, V> getSuccessor(Entry<K, V> entry) {
         if (entry == null) {
             return null;
         }
