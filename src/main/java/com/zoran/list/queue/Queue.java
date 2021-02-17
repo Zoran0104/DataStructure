@@ -1,6 +1,6 @@
-package com.zoran.List.queue;
+package com.zoran.list.queue;
 
-import com.zoran.List.linkedlist.SingleLinkedList;
+import com.zoran.list.linkedlist.SingleLinkedList;
 
 public class Queue<E>   {
     private SingleLinkedList<E> queue = new SingleLinkedList<>();

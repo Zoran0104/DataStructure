@@ -1,4 +1,4 @@
-package com.zoran.Set;
+package com.zoran.set;
 
 public interface Set<E> {
     int size();

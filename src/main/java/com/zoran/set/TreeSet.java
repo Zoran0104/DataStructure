@@ -1,4 +1,4 @@
-package com.zoran.Set;
+package com.zoran.set;
 
 import com.zoran.tree.BinaryTree;
 import com.zoran.tree.RBTree;

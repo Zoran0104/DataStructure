@@ -1,8 +1,4 @@
-package com.zoran.List.queue;
-
-import com.zoran.List.ArrayList;
-
-import java.util.Objects;
+package com.zoran.list.queue;
 
 public class CircleQueue<E> {
     private int front;

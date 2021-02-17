@@ -1,9 +1,9 @@
-package com.zoran.List.linkedlist;
+package com.zoran.list.linkedlist;
 
-public class CircleDualLinkedList<E> extends AbstractLinkedList<E> {
+public class DualLinkedList<E> extends AbstractLinkedList<E> {
     private static class Node<E> extends AbstractLinkedList.Node<E> {
-        E element;
         Node<E> prev;
+        E element;
         Node<E> next;
 
         public Node(Node<E> prev, E element, Node<E> next) {
@@ -47,19 +47,7 @@ public class CircleDualLinkedList<E> extends AbstractLinkedList<E> {
 
     @Override
     public Node<E> getNodeByIndex(int index) {
-        rangeCheck(index);
-        Node<E> node;
-        if (index < (size >> 1)) {
-            node = first;
-            for (int i = 0; i < index; i++) {
-                node = node.next;
-            }
-        } else {
-            node = last;
-            for (int i = size - 1; i > index; i--) {
-                node = node.prev;
-            }
-        }
-        return node;
+        //todo
+        return null;
     }
 }

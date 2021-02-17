@@ -1,4 +1,4 @@
-package com.zoran.List;
+package com.zoran.list;
 
 public class ArrayList<E> extends AbstractList<E> {
 

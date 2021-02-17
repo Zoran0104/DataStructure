@@ -1,4 +1,4 @@
-package com.zoran.List;
+package com.zoran.list;
 
 public abstract class AbstractList<E> implements List<E>{
     /**

@@ -1,6 +1,6 @@
-package com.zoran.List.linkedlist;
+package com.zoran.list.linkedlist;
 
-import com.zoran.List.AbstractList;
+import com.zoran.list.AbstractList;
 
 public abstract class AbstractLinkedList<E> extends AbstractList<E> {
     protected static class Node<E> {

@@ -1,4 +1,4 @@
-package com.zoran.List.linkedlist;
+package com.zoran.list.linkedlist;
 
 public class SingleLinkedList<E> extends AbstractLinkedList<E> {
     @Override
