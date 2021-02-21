@@ -8,8 +8,23 @@ public class CircleSingleLinkedList<E> extends AbstractLinkedList<E> {
 
     @Override
     public E remove(int index) {
-        //todo
-        return null;
+        rangeCheck(index);
+        Node<E> node = first;
+        if (index == 0) {
+            if (size == 1) {
+                first = null;
+            } else {
+                Node<E> nodeByIndex = getNodeByIndex(size - 1);
+                first = first.next;
+                nodeByIndex.next = first;
+            }
+        } else {
+            Node<E> prev = getNodeByIndex(index - 1);
+            node = prev.next;
+            prev.next = prev.next.next;
+        }
+        size--;
+        return node.element;
     }
 
     @Override
