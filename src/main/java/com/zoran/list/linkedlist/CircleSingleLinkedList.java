@@ -22,9 +22,13 @@ public class CircleSingleLinkedList<E> extends AbstractLinkedList<E> {
         rangeCheck(index);
         Node<E> node = first;
         if (index == 0) {
-            Node<E> nodeByIndex = getNodeByIndex(size - 1);
-            first = first.next;
-            nodeByIndex.next = first;
+            if (size == 1) {
+                first = null;
+            } else {
+                Node<E> nodeByIndex = getNodeByIndex(size - 1);
+                first = first.next;
+                nodeByIndex.next = first;
+            }
         } else {
             Node<E> prev = getNodeByIndex(index - 1);
             node = prev.next;
