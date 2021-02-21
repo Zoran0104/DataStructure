@@ -1,7 +1,5 @@
 package com.zoran.tree;
 
-import org.w3c.dom.Node;
-
 import java.util.Comparator;
 
 public class RBTree<E> extends BalanceBinarySearchTree<E> {
@@ -102,14 +100,11 @@ public class RBTree<E> extends BalanceBinarySearchTree<E> {
     }
 
     @Override
-    protected void afterRemove(Node<E> node, Node<E> replacement) {
+    protected void afterRemove(Node<E> node) {
         //如果删除的节点是红色
-        if (isRed(node)) {
-            return;
-        }
         //用以取代node的子节点是红色
-        if (isRed(replacement)) {
-            black(replacement);
+        if (isRed(node)) {
+            black(node);
             return;
         }
         Node<E> parent = node.parent;
@@ -118,7 +113,7 @@ public class RBTree<E> extends BalanceBinarySearchTree<E> {
             return;
         }
         //删除的是黑色叶子节点
-        boolean left = parent.left==null||node.isLeftChild();
+        boolean left = parent.left == null || node.isLeftChild();
         Node<E> sibling = left ? parent.right : parent.left;
         if (left) {
             if (isRed(sibling)) {
@@ -134,7 +129,7 @@ public class RBTree<E> extends BalanceBinarySearchTree<E> {
                 black(parent);
                 red(sibling);
                 if (parentBlack) {
-                    afterRemove(parent, null);
+                    afterRemove(parent);
                 }
             } else {
                 if (isBlack(sibling.right)) {
@@ -160,7 +155,7 @@ public class RBTree<E> extends BalanceBinarySearchTree<E> {
                 black(parent);
                 red(sibling);
                 if (parentBlack) {
-                    afterRemove(parent, null);
+                    afterRemove(parent);
                 }
             } else {
                 if (isBlack(sibling.left)) {

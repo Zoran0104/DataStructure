@@ -13,7 +13,6 @@ public class BinarySearchTree<E> extends BinaryTree {
     }
 
 
-
     public void clear() {
 
     }
@@ -85,25 +84,26 @@ public class BinarySearchTree<E> extends BinaryTree {
             } else if (node.isRightChild()) {
                 node.parent.right = replacement;
             }
-            afterRemove(node, replacement);
+            afterRemove(replacement);
         } else if (node.parent == null) {
             //叶子节点且root节点
             root = null;
-            afterRemove(node, null);
-        }else{
+            afterRemove(node);
+        } else {
             //叶子节点且普通节点
             if (node.isLeftChild()) {
                 node.parent.left = null;
-            }else{
+            } else {
                 node.parent.right = null;
             }
-            afterRemove(node, null);
+            afterRemove(node);
         }
     }
 
-    protected void afterRemove(Node<E> node,Node<E> replacement) {
+    protected void afterRemove(Node<E> node) {
 
     }
+
     /**
      * 查找值为element的节点
      *
@@ -126,7 +126,6 @@ public class BinarySearchTree<E> extends BinaryTree {
     }
 
 
-
     public boolean contains(E element) {
         return node(element) != null;
     }
@@ -136,8 +135,6 @@ public class BinarySearchTree<E> extends BinaryTree {
             throw new IllegalArgumentException("element cant be null");
         }
     }
-
-
 
 
     @Override
@@ -154,8 +151,6 @@ public class BinarySearchTree<E> extends BinaryTree {
         toString(node.right, sb, prefix + "[R]");
         return sb.toString();
     }
-
-
 
 
 }
