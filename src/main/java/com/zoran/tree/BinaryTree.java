@@ -6,6 +6,7 @@ import com.zoran.tree.printer.BinaryTreeInfo;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 public class BinaryTree<E> implements BinaryTreeInfo {
     protected static class Node<E> {
@@ -67,56 +68,145 @@ public class BinaryTree<E> implements BinaryTreeInfo {
         this.comparator = comparator;
     }
 
-    public void preOrderTraversal(Operation<E> operation) {
+    public void preOrderTraversalRecursion(Operation<E> operation) {
         if (operation == null) {
             return;
         }
-        preOrderTraversal(root, operation);
+        preOrderTraversalRecursion(root, operation);
     }
 
-    private void preOrderTraversal(Node<E> node, Operation<E> operation) {
+    private void preOrderTraversalRecursion(Node<E> node, Operation<E> operation) {
         if (node == null || operation.isStop) {
             return;
         }
         operation.isStop = operation.operation(node.element);
-        preOrderTraversal(node.left, operation);
-        preOrderTraversal(node.right, operation);
+        preOrderTraversalRecursion(node.left, operation);
+        preOrderTraversalRecursion(node.right, operation);
     }
 
-    public void onOrderTraversal(Operation<E> operation) {
+    public void preOrderTraversal(Operation<E> operation) {
+        if (operation == null || root == null) {
+            return;
+        }
+        Stack<Node<E>> stack = new Stack<>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            Node<E> pop = stack.pop();
+            operation.operation(pop.element);
+            if (pop.right != null) {
+                stack.push(pop.right);
+            }
+            if (pop.left != null) {
+                stack.push(pop.left);
+            }
+        }
+    }
+
+    public void onOrderTraversalRecursion(Operation<E> operation) {
         if (operation == null) {
             return;
         }
-        onOrderTraversal(root, operation);
+        onOrderTraversalRecursion(root, operation);
     }
 
-    private void onOrderTraversal(Node<E> node, Operation<E> operation) {
+    private void onOrderTraversalRecursion(Node<E> node, Operation<E> operation) {
         if (node == null || operation.isStop) {
             return;
         }
-        onOrderTraversal(node.left, operation);
+        onOrderTraversalRecursion(node.left, operation);
         if (operation.isStop) {
             return;
         }
         operation.operation(node.element);
-        onOrderTraversal(node.right, operation);
+        onOrderTraversalRecursion(node.right, operation);
+    }
+
+    public void onOrderTraversal(Operation<E> operation) {
+        if (root == null || operation == null) {
+            return;
+        }
+        Stack<Node<E>> stack = new Stack<>();
+        Node<E> node = root;
+        boolean needLeft = true;
+        stack.push(node);
+        while (!stack.isEmpty()) {
+            node = stack.peek();
+            if (node.left != null && needLeft) {
+                stack.push(node.left);
+            } else {
+                needLeft = false;
+                node = stack.pop();
+                operation.operation(node.element);
+                if (node.right != null) {
+                    stack.push(node.right);
+                    needLeft = true;
+                }
+            }
+        }
+    }
+
+    public void onOrderTraversal2(Operation<E> operation) {
+        if (root == null || operation == null) {
+            return;
+        }
+        Stack<Node<E>> stack = new Stack<>();
+        Node<E> node = root;
+        while (true) {
+            if (node != null) {
+                stack.push(node);
+                node = node.left;
+            } else if (stack.isEmpty()) {
+                return;
+            } else {
+                node = stack.pop();
+                operation.operation(node.element);
+                node = node.right;
+            }
+        }
+    }
+
+    public void postOrderTraversalRecursion(Operation<E> operation) {
+        postOrderTraversalRecursion(root, operation);
+    }
+
+    private void postOrderTraversalRecursion(Node<E> node, Operation<E> operation) {
+        if (node == null || operation.isStop) {
+            return;
+        }
+        postOrderTraversalRecursion(node.left, operation);
+        postOrderTraversalRecursion(node.right, operation);
+        if (operation.isStop) {
+            return;
+        }
+        operation.operation(node.element);
     }
 
     public void postOrderTraversal(Operation<E> operation) {
-        postOrderTraversal(root, operation);
+        if (operation == null || root == null) {
+            return;
+        }
+        Node<E> node = root;
+        Stack<Node<E>> stack = new Stack<>();
+        stack.push(node);
+        Node<E> pop = root;
+        while (!stack.isEmpty()) {
+            Node<E> top = stack.peek();
+            if (top.isLeaf() || pop.parent == top) {
+                pop = stack.pop();
+                if (operation.operation(pop.element)) {
+                    return;
+                }
+            } else {
+                if (top.right != null) {
+                    stack.push(top.right);
+                }
+                if (top.left != null) {
+                    stack.push(top.left);
+                }
+            }
+        }
     }
 
-    private void postOrderTraversal(Node<E> node, Operation<E> operation) {
-        if (node == null || operation.isStop) {
-            return;
-        }
-        postOrderTraversal(node.left, operation);
-        postOrderTraversal(node.right, operation);
-        if (operation.isStop) {
-            return;
-        }
-        operation.operation(node.element);
-    }
 
     public void levelOrderTraversal(Operation<E> operation) {
         if (operation == null) {
@@ -263,7 +353,7 @@ public class BinaryTree<E> implements BinaryTreeInfo {
         return true;
     }
 
-    protected Node<E> createNode(E element,Node<E> parent) {
+    protected Node<E> createNode(E element, Node<E> parent) {
         return new Node<>(element, parent);
     }
 
