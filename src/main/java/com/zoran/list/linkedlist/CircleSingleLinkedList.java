@@ -3,18 +3,7 @@ package com.zoran.list.linkedlist;
 public class CircleSingleLinkedList<E> extends AbstractLinkedList<E> {
     @Override
     public void add(int index, E element) {
-        rangeCheckForAdd(index);
-        if (index == 0) {
-            Node newNode = new Node<>(element, first);
-            //注意一开始链表为空的情况
-            Node<E> node = size == 0 ? newNode : getNodeByIndex(size - 1);
-            first = newNode;
-            node.next = first;
-        } else {
-            Node<E> nodeByIndex = getNodeByIndex(index - 1);
-            nodeByIndex.next = new Node<>(element, nodeByIndex.next);
-        }
-        size++;
+        //todo
     }
 
     @Override
