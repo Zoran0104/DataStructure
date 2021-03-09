@@ -216,12 +216,39 @@ public class BinaryTree<E> implements BinaryTreeInfo {
     }
 
     private void levelOrderTraversal(Node<E> root, Operation<E> operation) {
-        //todo
+        if (root == null || operation == null) {
+            return;
+        }
+        Node<E> node = root;
+        Queue<Node<E>> queue = new LinkedList<>();
+        queue.offer(node);
+        while (!queue.isEmpty()) {
+            node = queue.poll();
+            operation.operation(node.element);
+            if (node.left != null) {
+                queue.offer(node.left);
+            }
+            if (node.right != null) {
+                queue.offer(node.right);
+            }
+        }
     }
 
     public Node<E> getPredecessor(Node<E> node) {
-        //todo
-        return null;
+        if (node == null) {
+            return null;
+        }
+        if (node.left != null) {
+            node = node.left;
+            while (node.right != null) {
+                node = node.right;
+            }
+            return node;
+        }
+        while (node.parent != null && !node.isRightChild()) {
+            node = node.parent;
+        }
+        return node.parent;
     }
 
     public Node<E> getSuccessor(Node<E> node) {
@@ -245,8 +272,26 @@ public class BinaryTree<E> implements BinaryTreeInfo {
     }
 
     private int height(Node<E> node) {
-        //todo
-        return 0;
+        if (node == null) {
+            return 0;
+        }
+        Queue<Node<E>> queue = new LinkedList<>();
+        queue.offer(node);
+        int height = 0;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                Node<E> poll = queue.poll();
+                if (poll.left != null) {
+                    queue.offer(poll.left);
+                }
+                if (poll.right != null) {
+                    queue.offer(poll.right);
+                }
+            }
+            height++;
+        }
+        return height;
     }
 
     public boolean isCompleteTree() {
